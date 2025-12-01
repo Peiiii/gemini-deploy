@@ -2,6 +2,7 @@ import React from 'react';
 import { ExternalLink, GitBranch, Clock, CheckCircle, XCircle, AlertCircle, FolderArchive, Activity, Server, Zap, Plus } from 'lucide-react';
 import { useProjectStore } from '../stores/projectStore';
 import { usePresenter } from '../contexts/PresenterContext';
+import { URLS } from '../constants';
 
 export const Dashboard: React.FC = () => {
   const projects = useProjectStore((state) => state.projects);
@@ -87,7 +88,7 @@ export const Dashboard: React.FC = () => {
                         <h3 className="font-bold text-slate-900 dark:text-white text-lg group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">{project.name}</h3>
                         <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-gray-500 mt-1">
                             {project.sourceType === 'zip' ? <FolderArchive className="w-3 h-3" /> : <GitBranch className="w-3 h-3" />}
-                            <span className="truncate max-w-[150px]">{project.repoUrl.replace('https://github.com/', '')}</span>
+                            <span className="truncate max-w-[150px]">{project.repoUrl.replace(URLS.GITHUB_BASE, '')}</span>
                         </div>
                     </div>
                 </div>

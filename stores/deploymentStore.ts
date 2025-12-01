@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { DeploymentStatus, BuildLog } from '../types';
+import { APP_CONFIG } from '../constants';
 
 export const DEFAULT_CODE_SNIPPET = `import { GoogleGenAI } from "@google/genai";
 
@@ -9,7 +10,7 @@ const ai = new GoogleGenAI({
 });
 
 const model = ai.models.getGenerativeModel({ 
-  model: "gemini-2.5-flash" 
+  model: "${APP_CONFIG.DEFAULT_AI_MODEL}" 
 });`;
 
 interface DeploymentState {

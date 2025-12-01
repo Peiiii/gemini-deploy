@@ -2,23 +2,24 @@ import { IProjectProvider, IDeploymentProvider } from './interfaces';
 import { Project, BuildLog, DeploymentStatus } from '../types';
 import { secureCodeForDeployment } from './geminiService';
 import { db } from './db';
+import { URLS } from '../constants';
 
 // --- Seed Data for First Run ---
 const SEED_PROJECTS: Project[] = [
   {
     id: 'seed-1',
     name: 'travel-planner-ai',
-    repoUrl: 'https://github.com/johndoe/travel-planner-ai',
+    repoUrl: `${URLS.GITHUB_BASE}johndoe/travel-planner-ai`,
     sourceType: 'github',
     lastDeployed: '2 hours ago',
     status: 'Live',
-    url: 'https://travel-planner.gemini-deploy.com',
+    url: URLS.getDeploymentUrl('travel-planner'),
     framework: 'React'
   },
   {
     id: 'seed-2',
     name: 'gemini-chatbot-v2',
-    repoUrl: 'https://github.com/johndoe/gemini-chatbot',
+    repoUrl: `${URLS.GITHUB_BASE}johndoe/gemini-chatbot`,
     sourceType: 'github',
     lastDeployed: '1 day ago',
     status: 'Failed',
@@ -59,7 +60,7 @@ export class IndexedDBProjectProvider implements IProjectProvider {
 export class LocalDeploymentProvider implements IDeploymentProvider {
   async analyzeCode(apiKey: string, sourceCode: string): Promise<{ refactoredCode: string; explanation: string }> {
     // Generate a fake proxy URL to simulate the backend infrastructure
-    const proxyUrl = `https://proxy-${Math.random().toString(36).substring(7)}.gemini-deploy.com/v1`;
+    const proxyUrl = URLS.getProxyUrl(Math.random().toString(36).substring(7));
     return secureCodeForDeployment(apiKey, sourceCode, proxyUrl);
   }
 

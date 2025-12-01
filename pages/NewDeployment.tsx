@@ -4,6 +4,7 @@ import { usePresenter } from '../contexts/PresenterContext';
 import { DeploymentStatus } from '../types';
 import { Terminal } from '../components/Terminal';
 import { ArrowRight, ShieldCheck, Cpu, Github, Globe, Loader2, Sparkles, FolderArchive, Upload, FileCode, X, Check, ChevronRight, Play, ExternalLink } from 'lucide-react';
+import { URLS } from '../constants';
 
 const STEPS = [
     { id: 1, label: 'Source', desc: 'Connect code' },
@@ -36,7 +37,7 @@ export const NewDeployment: React.FC = () => {
   const handleDeployStart = () => {
     presenter.deployment.startBuildSimulation(() => {
        const identifier = state.sourceType === 'github' ? state.repoUrl : (state.zipFile?.name || 'archive.zip');
-       const url = `https://${state.projectName.toLowerCase()}.gemini-deploy.com`;
+       const url = URLS.getDeploymentUrl(state.projectName);
        presenter.project.addProject(state.projectName, url, state.sourceType, identifier);
     });
   };
@@ -317,14 +318,14 @@ export const NewDeployment: React.FC = () => {
                    </div>
                    <div>
                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Deployment Live!</h3>
-                        <a href={`https://${state.projectName.toLowerCase()}.gemini-deploy.com`} target="_blank" rel="noreferrer" className="text-green-600 dark:text-green-400 hover:text-green-500 dark:hover:text-green-300 font-mono text-sm flex items-center gap-2 hover:underline">
-                        https://{state.projectName.toLowerCase()}.gemini-deploy.com <ExternalLink className="w-3 h-3" />
+                        <a href={URLS.getDeploymentUrl(state.projectName)} target="_blank" rel="noreferrer" className="text-green-600 dark:text-green-400 hover:text-green-500 dark:hover:text-green-300 font-mono text-sm flex items-center gap-2 hover:underline">
+                        {URLS.getDeploymentUrl(state.projectName)} <ExternalLink className="w-3 h-3" />
                         </a>
                    </div>
                </div>
                
                <div className="flex gap-3">
-                    <button onClick={() => window.open(`https://${state.projectName.toLowerCase()}.gemini-deploy.com`, '_blank')} className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-slate-800 dark:hover:bg-gray-200 transition-colors flex items-center gap-2">
+                    <button onClick={() => window.open(URLS.getDeploymentUrl(state.projectName), '_blank')} className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-slate-800 dark:hover:bg-gray-200 transition-colors flex items-center gap-2">
                         Open App <ExternalLink className="w-4 h-4" />
                     </button>
                     <button onClick={() => presenter.ui.navigateTo('dashboard')} className="px-6 py-2 bg-slate-200 dark:bg-white/5 text-slate-700 dark:text-white border border-slate-300 dark:border-white/10 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-white/10 transition-colors">

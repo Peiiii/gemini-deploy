@@ -1,4 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
+import { APP_CONFIG } from "../constants";
 
 // This service simulates the backend "Agent" that would analyze user code 
 // and rewrite it to use the secure proxy entrypoint instead of direct API calls.
@@ -30,7 +31,7 @@ export const secureCodeForDeployment = async (
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: APP_CONFIG.DEFAULT_AI_MODEL,
       contents: `Here is the source code:\n\n${sourceCode}`,
       config: {
         systemInstruction: systemPrompt,
