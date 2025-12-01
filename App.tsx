@@ -18,11 +18,11 @@ const MainLayout = () => {
   }, [theme]);
 
   return (
-    <div className="flex min-h-screen bg-dark-bg text-slate-900 dark:text-gray-200 font-sans selection:bg-brand-500/30 selection:text-brand-700 dark:selection:text-brand-200 transition-colors duration-300">
+    <div className="flex min-h-screen bg-app-bg text-slate-900 dark:text-gray-200 font-sans selection:bg-brand-500/30 selection:text-brand-700 dark:selection:text-brand-200 transition-colors duration-300">
       <Sidebar />
       
       <main className="ml-64 flex-1 overflow-auto relative z-10">
-        <header className="h-16 border-b border-dark-border bg-dark-bg/50 backdrop-blur sticky top-0 z-20 flex items-center justify-between px-8">
+        <header className="h-16 border-b border-app-border bg-app-bg/50 backdrop-blur sticky top-0 z-20 flex items-center justify-between px-8">
           <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-gray-500">
             <span className="hover:text-slate-800 dark:hover:text-gray-300 transition-colors cursor-pointer">Organization</span>
             <span>/</span>
@@ -42,7 +42,7 @@ const MainLayout = () => {
              </button>
              <button className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/5 rounded-full transition-all relative">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-dark-bg"></span>
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-app-bg"></span>
              </button>
              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-purple-600 border border-slate-200 dark:border-white/10 ring-2 ring-transparent hover:ring-brand-500/50 transition-all cursor-pointer"></div>
           </div>

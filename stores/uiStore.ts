@@ -11,7 +11,7 @@ interface UIState {
 
 export const useUIStore = create<UIState>((set) => ({
   currentView: 'dashboard',
-  theme: 'dark', // Default to dark
+  theme: 'light', // Default to light
   actions: {
     setCurrentView: (view) => set({ currentView: view }),
     toggleTheme: () => set((state) => ({ theme: state.theme === 'dark' ? 'light' : 'dark' })),

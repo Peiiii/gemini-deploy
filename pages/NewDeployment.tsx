@@ -61,7 +61,7 @@ export const NewDeployment: React.FC = () => {
             const isCompleted = i + 1 < state.step;
             return (
                 <div key={i} className="flex-1 flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all duration-300 z-10 bg-white dark:bg-dark-bg ${
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all duration-300 z-10 bg-white dark:bg-app-bg ${
                         isActive ? 'border-brand-500 text-brand-600 dark:text-brand-400 shadow-[0_0_15px_rgba(56,189,248,0.4)] scale-110' : 
                         isCompleted ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 dark:border-gray-700 text-slate-400 dark:text-gray-500'
                     }`}>
@@ -89,7 +89,7 @@ export const NewDeployment: React.FC = () => {
                 className={`relative group p-6 rounded-xl border-2 text-left transition-all duration-200 ${
                     state.sourceType === 'github' 
                     ? 'bg-brand-500/10 border-brand-500 shadow-[0_0_20px_rgba(56,189,248,0.15)]' 
-                    : 'bg-white dark:bg-dark-surface border-slate-200 dark:border-dark-border hover:border-brand-500/50 hover:bg-slate-50 dark:hover:bg-dark-surfaceHighlight'
+                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-500/50 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
             >
                 <div className="flex justify-between items-start mb-4">
@@ -107,7 +107,7 @@ export const NewDeployment: React.FC = () => {
                 className={`relative group p-6 rounded-xl border-2 text-left transition-all duration-200 ${
                     state.sourceType === 'zip' 
                     ? 'bg-brand-500/10 border-brand-500 shadow-[0_0_20px_rgba(56,189,248,0.15)]' 
-                    : 'bg-white dark:bg-dark-surface border-slate-200 dark:border-dark-border hover:border-brand-500/50 hover:bg-slate-50 dark:hover:bg-dark-surfaceHighlight'
+                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-500/50 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
             >
                 <div className="flex justify-between items-start mb-4">
@@ -135,13 +135,13 @@ export const NewDeployment: React.FC = () => {
                               presenter.deployment.autoProjectName(e.target.value, 'github');
                             }}
                             placeholder="github.com/username/project"
-                            className="w-full bg-white dark:bg-dark-bg border border-slate-200 dark:border-dark-border rounded-lg pl-12 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-slate-400 dark:placeholder:text-gray-700"
+                            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg pl-12 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-slate-400 dark:placeholder:text-gray-700"
                         />
                     </div>
                 </div>
             ) : (
                 <div 
-                    className="animate-fade-in border-2 border-dashed border-slate-300 dark:border-gray-700 hover:border-brand-500/50 rounded-xl h-40 flex flex-col items-center justify-center text-center transition-all cursor-pointer bg-white/50 dark:bg-dark-bg/50 group"
+                    className="animate-fade-in border-2 border-dashed border-slate-300 dark:border-gray-700 hover:border-brand-500/50 rounded-xl h-40 flex flex-col items-center justify-center text-center transition-all cursor-pointer bg-white/50 dark:bg-app-bg/50 group"
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
@@ -204,7 +204,7 @@ export const NewDeployment: React.FC = () => {
                     <FileCode className="w-4 h-4 text-slate-400 dark:text-gray-500" /> Source Code Sample
                     </h4>
                 </div>
-                <div className="relative rounded-lg overflow-hidden border border-slate-200 dark:border-dark-border group">
+                <div className="relative rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 group">
                     <div className="absolute top-0 left-0 right-0 h-8 bg-slate-100 dark:bg-[#1e293b] flex items-center px-3 gap-2 border-b border-slate-200 dark:border-gray-700">
                         <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
                         <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
