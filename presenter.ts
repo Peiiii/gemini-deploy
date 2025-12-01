@@ -1,10 +1,10 @@
 import { DeploymentManager } from "./managers/DeploymentManager";
 import { ProjectManager } from "./managers/ProjectManager";
 import { UIManager } from "./managers/UIManager";
-import { IndexedDBProjectProvider, LocalDeploymentProvider } from "./services/providers";
+import { ServiceFactory } from "./services/ServiceFactory";
 
-// The Presenter now composes specific Providers.
-// This makes it easy to swap 'IndexedDBProjectProvider' with 'HttpProjectProvider' later.
+// The Presenter now uses the Factory to get dependencies.
+// This decouples the Presenter from specific implementations (Mock vs Real).
 
 export class Presenter {
   ui: UIManager;
@@ -12,10 +12,9 @@ export class Presenter {
   deployment: DeploymentManager;
 
   constructor() {
-    // 1. Initialize Providers
-    // We use IndexedDB for persistence and Local logic for simulation
-    const projectProvider = new IndexedDBProjectProvider();
-    const deploymentProvider = new LocalDeploymentProvider();
+    // 1. Get Providers via Factory (Configuration driven)
+    const projectProvider = ServiceFactory.getProjectProvider();
+    const deploymentProvider = ServiceFactory.getDeploymentProvider();
 
     // 2. Initialize Managers with dependencies
     this.ui = new UIManager();

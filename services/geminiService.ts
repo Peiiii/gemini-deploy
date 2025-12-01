@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { APP_CONFIG } from "../constants";
+import { APP_CONFIG, SECURITY_CONSTANTS } from "../constants";
 
 // This service simulates the backend "Agent" that would analyze user code 
 // and rewrite it to use the secure proxy entrypoint instead of direct API calls.
@@ -17,7 +17,7 @@ export const secureCodeForDeployment = async (
   const ai = new GoogleGenAI({ apiKey });
 
   const systemPrompt = `
-    You are a Senior DevOps Engineer and Security Expert.
+    ${SECURITY_CONSTANTS.SYSTEM_PROMPT_ROLE}
     Your task is to analyze a snippet of React/TypeScript code that initializes the Google GenAI SDK.
     
     The goal is to modify the code to use a secure Proxy Base URL instead of connecting directly to Google's servers.
@@ -25,7 +25,7 @@ export const secureCodeForDeployment = async (
 
     1. Detect where 'new GoogleGenAI' or similar initialization happens.
     2. Rewrite the initialization to include 'baseUrl: "${proxyEntrypoint}"'.
-    3. If the code uses 'process.env.API_KEY', keep it or replace it with a placeholder string "PROXY_SECURED_KEY" since the proxy handles auth.
+    3. If the code uses 'process.env.API_KEY', keep it or replace it with a placeholder string "${SECURITY_CONSTANTS.PROXY_KEY_PLACEHOLDER}" since the proxy handles auth.
     4. Return the result in JSON format.
   `;
 
