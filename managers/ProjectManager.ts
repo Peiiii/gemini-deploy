@@ -1,23 +1,37 @@
 import { useProjectStore } from '../stores/projectStore';
-import { Project } from '../types';
+import { IProjectProvider } from '../services/interfaces';
 
 export class ProjectManager {
-  addProject = (
+  private provider: IProjectProvider;
+
+  constructor(provider: IProjectProvider) {
+    this.provider = provider;
+  }
+
+  loadProjects = async () => {
+    const actions = useProjectStore.getState().actions;
+    actions.setIsLoading(true);
+    try {
+      const projects = await this.provider.getProjects();
+      actions.setProjects(projects);
+    } catch (error) {
+      console.error("Failed to load projects", error);
+    } finally {
+      actions.setIsLoading(false);
+    }
+  };
+
+  addProject = async (
     name: string,
     url: string,
     sourceType: 'github' | 'zip',
     sourceIdentifier: string
   ) => {
-    const newProject: Project = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: name,
-      repoUrl: sourceIdentifier,
-      sourceType: sourceType,
-      lastDeployed: 'Just now',
-      status: 'Live',
-      url: url,
-      framework: 'React',
-    };
-    useProjectStore.getState().actions.addProject(newProject);
+    try {
+      const newProject = await this.provider.createProject(name, url, sourceType, sourceIdentifier);
+      useProjectStore.getState().actions.addProject(newProject);
+    } catch (error) {
+      console.error("Failed to create project", error);
+    }
   };
 }

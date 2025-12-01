@@ -2,12 +2,18 @@ import React, { useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { NewDeployment } from './pages/NewDeployment';
-import { PresenterProvider } from './contexts/PresenterContext';
+import { PresenterProvider, usePresenter } from './contexts/PresenterContext';
 import { useUIStore } from './stores/uiStore';
 import { Bell, HelpCircle, Sun, Moon } from 'lucide-react';
 
 const MainLayout = () => {
   const { currentView, theme, actions: { toggleTheme } } = useUIStore((state) => state);
+  const presenter = usePresenter();
+
+  // Initial Data Load
+  useEffect(() => {
+    presenter.project.loadProjects();
+  }, []);
 
   useEffect(() => {
     if (theme === 'dark') {
