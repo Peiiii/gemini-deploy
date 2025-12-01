@@ -1,0 +1,5 @@
+{
+  "name": "GeminiDeploy",
+  "description": "One-click deployment platform for Google Gemini AI Studio applications with automatic secure proxy configuration.",
+  "requestFramePermissions": []
+}

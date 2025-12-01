@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeminiDeploy - AI App Hosting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              brand: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+                800: '#075985',
+                900: '#0c4a6e',
+                950: '#082f49',
+              },
+              // Semantic colors mapped to CSS variables
+              dark: {
+                bg: 'var(--bg-main)',
+                surface: 'var(--bg-surface)',
+                surfaceHighlight: 'var(--bg-highlight)',
+                border: 'var(--border-main)',
+                borderHighlight: 'var(--border-highlight)'
+              },
+              accent: {
+                glow: '#38bdf8',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'slide-up': 'slideUp 0.5s ease-out forwards',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'scan': 'scan 2s linear infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scan: {
+                '0%': { top: '0%' },
+                '100%': { top: '100%' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* Theme Variables */
+      :root {
+        --bg-main: #f8fafc; /* Slate 50 */
+        --bg-surface: #ffffff;
+        --bg-highlight: #f1f5f9; /* Slate 100 */
+        --border-main: #e2e8f0; /* Slate 200 */
+        --border-highlight: #cbd5e1; /* Slate 300 */
+        --text-main: #0f172a; /* Slate 900 */
+        --text-muted: #64748b; /* Slate 500 */
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(0, 0, 0, 0.05);
+      }
+
+      .dark {
+        --bg-main: #020617; /* Slate 950 */
+        --bg-surface: #0f172a; /* Slate 900 */
+        --bg-highlight: #1e293b; /* Slate 800 */
+        --border-main: #1e293b;
+        --border-highlight: #334155;
+        --text-main: #f8fafc; /* Slate 50 */
+        --text-muted: #94a3b8; /* Slate 400 */
+        --glass-bg: rgba(15, 23, 42, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.05);
+      }
+
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* In dark mode, add the gradient background. In light mode, keep it cleaner or subtle. */
+      .dark body {
+        background-image: 
+          radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 25%), 
+          radial-gradient(circle at 85% 30%, rgba(99, 102, 241, 0.08), transparent 25%);
+      }
+      
+      /* Glassmorphism Utilities */
+      .glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+      }
+      
+      .glass-card {
+        background: var(--bg-surface);
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--border-main);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      }
+
+      .dark .glass-card {
+        background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.6) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .glass-card:hover {
+        border-color: rgba(56, 189, 248, 0.3);
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+      }
+
+      /* Custom scrollbar for terminal */
+      .terminal-scroll::-webkit-scrollbar {
+        width: 6px;
+      }
+      .terminal-scroll::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      .terminal-scroll::-webkit-scrollbar-thumb {
+        background: #334155; 
+        border-radius: 3px;
+      }
+      .terminal-scroll::-webkit-scrollbar-thumb:hover {
+        background: #475569; 
+      }
+
+      /* Code Editor Syntax Highlighting Mockup */
+      .token-keyword { color: #c084fc; } /* Purple */
+      .token-string { color: #4ade80; }  /* Green */
+      .token-function { color: #60a5fa; } /* Blue */
+      .token-comment { color: #64748b; }  /* Gray */
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "zustand": "https://aistudiocdn.com/zustand@^5.0.9"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
