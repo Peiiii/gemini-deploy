@@ -1,8 +1,7 @@
 import React from 'react';
-import { LayoutDashboard, PlusCircle, Settings, Box, Github, Code2, Rocket, Wifi, Database } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, Settings, Box, Github, Code2, Rocket, Compass } from 'lucide-react';
 import { useUIStore } from '../stores/uiStore';
 import { usePresenter } from '../contexts/PresenterContext';
-import { APP_CONFIG } from '../constants';
 
 export const Sidebar: React.FC = () => {
   const currentView = useUIStore((state) => state.currentView);
@@ -11,11 +10,10 @@ export const Sidebar: React.FC = () => {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'deploy', label: 'New Deployment', icon: PlusCircle },
+    { id: 'explore', label: 'Explore Apps', icon: Compass }, // New Explore Item
     { id: 'integrations', label: 'Integrations', icon: Github },
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
-
-  const isMockMode = APP_CONFIG.USE_MOCK_ADAPTER;
 
   return (
     <div className="w-64 h-screen fixed left-0 top-0 flex flex-col glass border-r-0 z-50">
@@ -59,7 +57,7 @@ export const Sidebar: React.FC = () => {
         })}
       </nav>
 
-      <div className="p-4 mx-4 mb-2 rounded-xl bg-gradient-to-b from-slate-100 to-transparent dark:from-white/5 border border-slate-200 dark:border-white/5">
+      <div className="p-4 mx-4 mb-4 rounded-xl bg-gradient-to-b from-slate-100 to-transparent dark:from-white/5 border border-slate-200 dark:border-white/5">
         <div className="flex items-center gap-3">
            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300 flex items-center justify-center border border-indigo-500/20 dark:border-indigo-500/30">
               <Rocket className="w-4 h-4" />
@@ -71,23 +69,6 @@ export const Sidebar: React.FC = () => {
         </div>
         <div className="w-full bg-slate-200 dark:bg-gray-800 h-1 mt-3 rounded-full overflow-hidden">
             <div className="bg-brand-500 h-full w-[80%] rounded-full"></div>
-        </div>
-      </div>
-
-      {/* Connection Status Indicator */}
-      <div className="px-6 py-2">
-        <div className={`flex items-center justify-between text-[10px] font-mono border rounded px-2 py-1.5 ${
-            isMockMode 
-            ? 'border-yellow-500/30 bg-yellow-500/5 text-yellow-600 dark:text-yellow-400' 
-            : 'border-green-500/30 bg-green-500/5 text-green-600 dark:text-green-400'
-        }`}>
-            <span className="flex items-center gap-1.5 font-bold">
-                {isMockMode ? <Database className="w-3 h-3" /> : <Wifi className="w-3 h-3" />}
-                {isMockMode ? 'MOCK DATA' : 'CONNECTED'}
-            </span>
-            <span className={`w-1.5 h-1.5 rounded-full ${
-                isMockMode ? 'bg-yellow-500' : 'bg-green-500 animate-pulse'
-            }`}></span>
         </div>
       </div>
 

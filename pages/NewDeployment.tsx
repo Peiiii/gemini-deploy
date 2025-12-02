@@ -1,21 +1,22 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useDeploymentStore } from '../stores/deploymentStore';
 import { usePresenter } from '../contexts/PresenterContext';
 import { DeploymentStatus } from '../types';
 import { Terminal } from '../components/Terminal';
-import { ArrowRight, ShieldCheck, Cpu, Github, Globe, Loader2, Sparkles, FolderArchive, Upload, FileCode, X, Check, ChevronRight, Play, ExternalLink } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Github, Globe, Loader2, Sparkles, FolderArchive, Upload, FileCode, X, Check, ExternalLink, Lock, ChevronDown, ChevronUp, Link as LinkIcon } from 'lucide-react';
 import { URLS } from '../constants';
 
 const STEPS = [
-    { id: 1, label: 'Source', desc: 'Connect code' },
-    { id: 2, label: 'Secure', desc: 'AI Proxy' },
-    { id: 3, label: 'Deploy', desc: 'Go Live' }
+    { id: 1, label: 'Import', desc: 'Connect Source' },
+    { id: 2, label: 'Secure', desc: 'AI Safety Check' },
+    { id: 3, label: 'Live', desc: 'Launch App' }
 ];
 
 export const NewDeployment: React.FC = () => {
   const presenter = usePresenter();
   const state = useDeploymentStore(); 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showTechnical, setShowTechnical] = useState(false);
 
   useEffect(() => {
     return () => presenter.deployment.resetWizard();
@@ -43,18 +44,17 @@ export const NewDeployment: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-8 animate-fade-in">
+    <div className="max-w-4xl mx-auto p-8 animate-fade-in pb-24">
       {/* Header */}
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Deploy New Project</h1>
-        <p className="text-slate-500 dark:text-gray-400">Ship your Gemini AI application securely to the edge.</p>
+        <h1 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-3 tracking-tight">Deploy Your Project</h1>
+        <p className="text-lg text-slate-500 dark:text-gray-400">Bring your own code. We handle the hosting & security.</p>
       </div>
 
       {/* Modern Stepper */}
-      <div className="flex items-center justify-center mb-12 relative max-w-2xl mx-auto">
-        {/* Connecting Line */}
-        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 dark:bg-gray-800 -z-10 rounded-full"></div>
-        <div className="absolute top-1/2 left-0 h-0.5 bg-brand-500 -z-10 rounded-full transition-all duration-500 ease-out" 
+      <div className="flex items-center justify-center mb-16 relative max-w-2xl mx-auto">
+        <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-100 dark:bg-gray-800 -z-10 rounded-full"></div>
+        <div className="absolute top-1/2 left-0 h-1 bg-brand-500 -z-10 rounded-full transition-all duration-500 ease-out" 
              style={{ width: `${((state.step - 1) / (STEPS.length - 1)) * 100}%` }}></div>
 
         {STEPS.map((s, i) => {
@@ -62,278 +62,281 @@ export const NewDeployment: React.FC = () => {
             const isCompleted = i + 1 < state.step;
             return (
                 <div key={i} className="flex-1 flex flex-col items-center">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-all duration-300 z-10 bg-white dark:bg-app-bg ${
-                        isActive ? 'border-brand-500 text-brand-600 dark:text-brand-400 shadow-[0_0_15px_rgba(56,189,248,0.4)] scale-110' : 
-                        isCompleted ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300 dark:border-gray-700 text-slate-400 dark:text-gray-500'
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg border-4 transition-all duration-300 z-10 bg-white dark:bg-app-bg ${
+                        isActive ? 'border-brand-500 text-brand-600 dark:text-brand-400 shadow-[0_0_20px_rgba(56,189,248,0.4)] scale-110' : 
+                        isCompleted ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-100 dark:border-gray-800 text-slate-300 dark:text-gray-600'
                     }`}>
-                        {isCompleted ? <Check className="w-5 h-5" /> : i + 1}
+                        {isCompleted ? <Check className="w-6 h-6" /> : i + 1}
                     </div>
-                    <div className={`mt-3 text-center transition-colors ${isActive ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-gray-500'}`}>
-                        <span className="text-xs font-bold uppercase tracking-wider block">{s.label}</span>
-                        <span className="text-[10px] hidden sm:block">{s.desc}</span>
+                    <div className={`mt-4 text-center transition-colors ${isActive ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-gray-600'}`}>
+                        <span className="text-sm font-bold block">{s.label}</span>
                     </div>
                 </div>
             )
         })}
       </div>
 
-      {/* Step 1: Connect Source */}
+      {/* Step 1: Import Source */}
       {state.step === 1 && (
-        <div className="glass-card rounded-2xl p-8 animate-slide-up">
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-            <Github className="w-6 h-6 text-brand-500 dark:text-brand-400" /> Select Import Source
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <button 
+        <div className="space-y-8 animate-slide-up max-w-3xl mx-auto">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+             {/* Option A: GitHub */}
+             <button
                 onClick={() => state.actions.setSourceType('github')}
-                className={`relative group p-6 rounded-xl border-2 text-left transition-all duration-200 ${
+                className={`relative p-8 rounded-3xl border-2 transition-all duration-300 flex flex-col items-center text-center gap-4 group overflow-hidden ${
                     state.sourceType === 'github' 
-                    ? 'bg-brand-500/10 border-brand-500 shadow-[0_0_20px_rgba(56,189,248,0.15)]' 
-                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-500/50 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    ? 'border-brand-500 bg-brand-50/50 dark:bg-brand-900/10 ring-4 ring-brand-500/10 shadow-xl scale-[1.02]' 
+                    : 'border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-lg'
                 }`}
-            >
-                <div className="flex justify-between items-start mb-4">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${state.sourceType === 'github' ? 'bg-brand-500 text-white' : 'bg-slate-100 dark:bg-gray-800 text-slate-400 dark:text-gray-400 group-hover:bg-slate-200 dark:group-hover:bg-gray-700'}`}>
-                        <Github className="w-6 h-6" />
-                    </div>
-                    {state.sourceType === 'github' && <div className="w-6 h-6 rounded-full bg-brand-500 text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>}
+             >
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-colors ${state.sourceType === 'github' ? 'bg-brand-500 text-white' : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white group-hover:bg-brand-100 dark:group-hover:bg-brand-900/30'}`}>
+                    <Github className="w-8 h-8" />
                 </div>
-                <h3 className={`text-lg font-bold mb-1 ${state.sourceType === 'github' ? 'text-brand-900 dark:text-white' : 'text-slate-700 dark:text-gray-300'}`}>GitHub Repository</h3>
-                <p className="text-sm text-slate-500 dark:text-gray-500">Import directly from your Git repositories.</p>
-            </button>
+                <div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">GitHub Repo</h3>
+                    <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">Import directly from URL</p>
+                </div>
+                {state.sourceType === 'github' && <div className="absolute top-4 right-4 text-brand-500"><Check className="w-6 h-6" /></div>}
+             </button>
 
-            <button 
-                onClick={() => state.actions.setSourceType('zip')}
-                className={`relative group p-6 rounded-xl border-2 text-left transition-all duration-200 ${
+             {/* Option B: Zip Upload */}
+             <button
+                onClick={() => {
+                    state.actions.setSourceType('zip');
+                    // Automatically trigger file dialog if switching to zip
+                    if(state.sourceType !== 'zip') setTimeout(() => fileInputRef.current?.click(), 100);
+                }}
+                className={`relative p-8 rounded-3xl border-2 transition-all duration-300 flex flex-col items-center text-center gap-4 group overflow-hidden ${
                     state.sourceType === 'zip' 
-                    ? 'bg-brand-500/10 border-brand-500 shadow-[0_0_20px_rgba(56,189,248,0.15)]' 
-                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-brand-500/50 hover:bg-slate-50 dark:hover:bg-slate-800'
+                    ? 'border-brand-500 bg-brand-50/50 dark:bg-brand-900/10 ring-4 ring-brand-500/10 shadow-xl scale-[1.02]' 
+                    : 'border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-lg'
                 }`}
-            >
-                <div className="flex justify-between items-start mb-4">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center transition-colors ${state.sourceType === 'zip' ? 'bg-brand-500 text-white' : 'bg-slate-100 dark:bg-gray-800 text-slate-400 dark:text-gray-400 group-hover:bg-slate-200 dark:group-hover:bg-gray-700'}`}>
-                        <FolderArchive className="w-6 h-6" />
-                    </div>
-                    {state.sourceType === 'zip' && <div className="w-6 h-6 rounded-full bg-brand-500 text-white flex items-center justify-center"><Check className="w-3 h-3" /></div>}
+             >
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-colors ${state.sourceType === 'zip' ? 'bg-brand-500 text-white' : 'bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-white group-hover:bg-brand-100 dark:group-hover:bg-brand-900/30'}`}>
+                    <FolderArchive className="w-8 h-8" />
                 </div>
-                <h3 className={`text-lg font-bold mb-1 ${state.sourceType === 'zip' ? 'text-brand-900 dark:text-white' : 'text-slate-700 dark:text-gray-300'}`}>Upload Zip</h3>
-                <p className="text-sm text-slate-500 dark:text-gray-500">Drag and drop your AI Studio export.</p>
-            </button>
+                <div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white">Upload File</h3>
+                    <p className="text-sm text-slate-500 dark:text-gray-400 mt-1">Drag & drop .zip archive</p>
+                </div>
+                {state.sourceType === 'zip' && <div className="absolute top-4 right-4 text-brand-500"><Check className="w-6 h-6" /></div>}
+             </button>
           </div>
 
-          <div className="min-h-[160px] bg-slate-50 dark:bg-black/20 rounded-xl p-6 border border-slate-200 dark:border-white/5">
-            {state.sourceType === 'github' ? (
-                <div className="animate-fade-in max-w-xl mx-auto">
-                    <label className="block text-sm font-medium text-slate-500 dark:text-gray-400 mb-2">Repository URL</label>
+          {/* Dynamic Input Area */}
+          <div className="bg-slate-50 dark:bg-white/5 rounded-2xl p-6 border border-slate-200 dark:border-white/5 animate-fade-in">
+             {state.sourceType === 'github' ? (
+                <div>
+                    <label className="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2 ml-1">Paste Repository URL</label>
                     <div className="relative group">
-                        <Github className="absolute left-4 top-3.5 w-5 h-5 text-slate-400 dark:text-gray-500 group-focus-within:text-brand-500 transition-colors" />
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                            <LinkIcon className="w-5 h-5" />
+                        </div>
                         <input 
                             type="text" 
                             value={state.repoUrl}
                             onChange={(e) => {
-                              state.actions.setRepoUrl(e.target.value);
-                              presenter.deployment.autoProjectName(e.target.value, 'github');
+                                state.actions.setRepoUrl(e.target.value);
+                                presenter.deployment.autoProjectName(e.target.value, 'github');
                             }}
-                            placeholder="github.com/username/project"
-                            className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg pl-12 pr-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-slate-400 dark:placeholder:text-gray-700"
+                            placeholder="https://github.com/username/project"
+                            className="w-full pl-12 pr-4 py-4 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all shadow-sm font-mono text-sm"
                         />
                     </div>
                 </div>
-            ) : (
+             ) : (
                 <div 
-                    className="animate-fade-in border-2 border-dashed border-slate-300 dark:border-gray-700 hover:border-brand-500/50 rounded-xl h-40 flex flex-col items-center justify-center text-center transition-all cursor-pointer bg-white/50 dark:bg-app-bg/50 group"
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
+                    onDrop={handleDrop}
+                    onDragOver={(e) => e.preventDefault()}
+                    className="border-2 border-dashed border-slate-300 dark:border-gray-600 rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-white dark:hover:bg-white/5 transition-colors group"
                 >
                     <input type="file" ref={fileInputRef} className="hidden" accept=".zip" onChange={handleFileChange} />
-                    
                     {state.zipFile ? (
-                        <div className="flex flex-col items-center">
-                            <div className="w-12 h-12 bg-green-500/20 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mb-3">
-                                <FileCode className="w-6 h-6" />
+                        <div className="animate-fade-in">
+                            <div className="w-16 h-16 bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 rounded-xl flex items-center justify-center mx-auto mb-4">
+                                <FileCode className="w-8 h-8" />
                             </div>
-                            <p className="text-slate-900 dark:text-white font-medium">{state.zipFile.name}</p>
-                            <p className="text-xs text-slate-500 dark:text-gray-500 mt-1">{(state.zipFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                            <button onClick={(e) => { e.stopPropagation(); state.actions.setZipFile(null); }} className="mt-3 text-xs text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 flex items-center gap-1 hover:underline">
-                                <X className="w-3 h-3" /> Remove file
-                            </button>
+                            <h4 className="font-bold text-lg text-slate-900 dark:text-white mb-1">{state.zipFile.name}</h4>
+                            <p className="text-sm text-green-600 dark:text-green-400">Ready to upload</p>
                         </div>
                     ) : (
                         <>
-                            <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-gray-800 text-slate-400 dark:text-gray-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                                <Upload className="w-5 h-5" />
+                            <div className="w-12 h-12 bg-slate-200 dark:bg-white/10 text-slate-500 dark:text-gray-400 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                <Upload className="w-6 h-6" />
                             </div>
-                            <p className="text-slate-600 dark:text-gray-300 font-medium">Click to upload or drag .zip</p>
+                            <h4 className="font-bold text-slate-900 dark:text-white mb-1">Click to browse</h4>
+                            <p className="text-sm text-slate-500 dark:text-gray-400">or drag file here</p>
                         </>
                     )}
                 </div>
-            )}
+             )}
+          </div>
             
-            <div className="flex justify-end pt-6">
-              <button 
-                onClick={() => (state.sourceType === 'github' ? state.repoUrl : state.zipFile) && state.actions.setStep(2)}
-                disabled={!(state.sourceType === 'github' ? state.repoUrl : state.zipFile)}
-                className="bg-brand-600 hover:bg-brand-500 text-white px-8 py-3 rounded-lg font-medium transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:translate-x-1"
-              >
-                Next Step <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
+          <div className="flex justify-end pt-2">
+            <button 
+              onClick={() => (state.sourceType === 'github' ? state.repoUrl : state.zipFile) && state.actions.setStep(2)}
+              disabled={!(state.sourceType === 'github' ? state.repoUrl : state.zipFile)}
+              className="bg-brand-600 hover:bg-brand-500 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all flex items-center gap-3 shadow-xl shadow-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-1 hover:shadow-brand-500/40 w-full md:w-auto justify-center"
+            >
+              Next Step <ArrowRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       )}
 
-      {/* Step 2: Configure AI Proxy */}
+      {/* Step 2: Simplified "Magic" Security Check */}
       {state.step === 2 && (
-        <div className="glass-card rounded-2xl p-8 animate-slide-up">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-                 <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <ShieldCheck className="w-6 h-6 text-green-600 dark:text-green-400" /> AI Security Analysis
-                 </h2>
-                 <p className="text-slate-500 dark:text-gray-400 text-sm mt-1">We'll scan your code and auto-inject a secure proxy configuration.</p>
-            </div>
-          </div>
+        <div className="animate-slide-up max-w-2xl mx-auto">
+          <div className="glass-card rounded-3xl p-10 text-center relative overflow-hidden">
+             
+             {/* Background Effects */}
+             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-brand-50/50 to-transparent dark:from-brand-900/10 dark:to-transparent pointer-events-none"></div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left: Input */}
-            <div className="space-y-6">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-slate-600 dark:text-gray-300 font-medium text-sm flex items-center gap-2">
-                    <FileCode className="w-4 h-4 text-slate-400 dark:text-gray-500" /> Source Code Sample
-                    </h4>
-                </div>
-                <div className="relative rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700 group">
-                    <div className="absolute top-0 left-0 right-0 h-8 bg-slate-100 dark:bg-[#1e293b] flex items-center px-3 gap-2 border-b border-slate-200 dark:border-gray-700">
-                        <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
-                        <span className="ml-2 text-xs text-slate-500 dark:text-gray-500 font-mono">src/api/client.ts</span>
-                    </div>
-                    <textarea 
-                    value={state.sourceCode}
-                    onChange={(e) => state.actions.setSourceCode(e.target.value)}
-                    className="w-full h-48 bg-white dark:bg-[#020617] text-slate-800 dark:text-gray-300 p-4 pt-10 text-xs font-mono focus:outline-none resize-none leading-relaxed"
-                    spellCheck="false"
-                    />
-                </div>
-                <button 
-                  onClick={() => presenter.deployment.handleAnalyzeCode()}
-                  disabled={state.isAnalyzing}
-                  className="mt-4 w-full bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white text-sm py-3 rounded-lg font-medium transition-all flex justify-center items-center gap-2 hover:border-brand-500/30"
-                >
-                  {state.isAnalyzing ? <Loader2 className="w-4 h-4 animate-spin text-brand-600 dark:text-brand-400" /> : <Sparkles className="w-4 h-4 text-brand-600 dark:text-brand-400" />}
-                  {state.isAnalyzing ? 'AI Agent is analyzing...' : 'Analyze & Secure Code'}
-                </button>
-              </div>
-            </div>
-
-            {/* Right: Output Visualization */}
-            <div className="relative flex flex-col h-full min-h-[300px]">
-               <div className="absolute -inset-1 bg-gradient-to-b from-brand-500/20 to-purple-600/20 rounded-2xl blur-lg opacity-50"></div>
-               <div className="relative flex-1 bg-[#0d1117] rounded-xl border border-gray-800 overflow-hidden flex flex-col">
-                  {/* Editor Header */}
-                  <div className="bg-[#161b22] px-4 py-2 flex items-center justify-between border-b border-gray-800">
-                      <div className="flex gap-2">
-                         <span className="text-xs text-brand-400 font-mono">diff --git a/client.ts b/client.ts</span>
-                      </div>
-                      {state.analyzedCode && <span className="text-[10px] bg-green-500/10 text-green-400 px-2 py-0.5 rounded border border-green-500/20">SECURED</span>}
-                  </div>
-
-                  {/* Editor Body */}
-                  <div className="relative flex-1 p-4 overflow-hidden font-mono text-xs">
-                      {state.isAnalyzing && (
-                        <div className="absolute inset-0 z-20 pointer-events-none">
-                            <div className="w-full h-0.5 bg-brand-500 shadow-[0_0_15px_#0ea5e9] animate-scan opacity-80"></div>
+             <div className="relative z-10">
+                {state.analyzedCode ? (
+                    // State: Success
+                    <div className="animate-fade-in">
+                        <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(34,197,94,0.4)]">
+                            <ShieldCheck className="w-12 h-12 text-white" />
                         </div>
-                      )}
-                      
-                      {state.analyzedCode ? (
-                         <div className="space-y-1 animate-fade-in">
-                            <div className="text-gray-500 select-none">// GeminiDeploy Auto-Generated Proxy</div>
-                            <pre className="text-green-300 whitespace-pre-wrap leading-relaxed">{state.analyzedCode}</pre>
-                         </div>
-                      ) : (
-                         <div className="h-full flex flex-col items-center justify-center text-gray-600 space-y-3">
-                            <Cpu className={`w-12 h-12 ${state.isAnalyzing ? 'text-brand-500 animate-pulse' : 'text-gray-700'}`} />
-                            <p className="text-center max-w-[200px]">{state.isAnalyzing ? 'Identifying insecure patterns...' : 'Waiting for analysis...'}</p>
-                         </div>
-                      )}
-                  </div>
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Code Secure</h2>
+                        <p className="text-slate-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                            We've configured the secure proxy for your app. It's ready to go live.
+                        </p>
+                    </div>
+                ) : (
+                    // State: Idle or Analyzing
+                    <div className="py-8">
+                        {state.isAnalyzing ? (
+                             <div className="relative w-32 h-32 mx-auto mb-8">
+                                <div className="absolute inset-0 border-4 border-brand-200 dark:border-brand-900 rounded-full"></div>
+                                <div className="absolute inset-0 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <Sparkles className="w-10 h-10 text-brand-500 animate-pulse" />
+                                </div>
+                             </div>
+                        ) : (
+                            <div className="w-32 h-32 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-8 animate-bounce">
+                                <Lock className="w-12 h-12 text-slate-400 dark:text-gray-500" />
+                            </div>
+                        )}
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                            {state.isAnalyzing ? 'Optimizing Security...' : 'Security Check'}
+                        </h2>
+                        <p className="text-slate-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                            {state.isAnalyzing 
+                                ? 'Scanning for exposed keys and configuring edge proxies.' 
+                                : 'We will automatically detect API keys and move them to a secure vault before deploying.'}
+                        </p>
+                    </div>
+                )}
 
-                  {/* Explanation Footer */}
-                  {state.explanation && (
-                     <div className="bg-[#161b22]/90 backdrop-blur p-3 border-t border-gray-800 text-[11px] text-gray-400 animate-slide-up">
+                {!state.analyzedCode && !state.isAnalyzing && (
+                    <button 
+                        onClick={() => presenter.deployment.handleAnalyzeCode()}
+                        className="w-full bg-brand-600 hover:bg-brand-500 text-white p-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-brand-500/25 transition-all flex items-center justify-center gap-3"
+                    >
+                        <Sparkles className="w-5 h-5" /> Secure & Continue
+                    </button>
+                )}
+
+                {state.analyzedCode && (
+                    <div className="flex flex-col gap-4">
+                         <button 
+                            onClick={handleDeployStart}
+                            className="w-full bg-green-600 hover:bg-green-500 text-white p-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-green-500/25 transition-all flex items-center justify-center gap-3 hover:scale-[1.02]"
+                        >
+                            <RocketIcon className="w-5 h-5" /> Launch Now
+                        </button>
+                        <div className="flex justify-between items-center px-2">
+                             <button onClick={() => state.actions.setStep(1)} className="text-slate-400 hover:text-slate-600 text-sm font-medium">Back</button>
+                             <button onClick={() => setShowTechnical(!showTechnical)} className="text-brand-600 text-sm font-medium hover:underline flex items-center gap-1">
+                                {showTechnical ? 'Hide' : 'Show'} technical details {showTechnical ? <ChevronUp className="w-3 h-3"/> : <ChevronDown className="w-3 h-3"/>}
+                             </button>
+                        </div>
+                    </div>
+                )}
+             </div>
+          </div>
+
+          {/* Technical Details (Hidden by default for beginners) */}
+          {showTechnical && state.analyzedCode && (
+            <div className="mt-6 animate-slide-up">
+                <div className="bg-[#0d1117] rounded-xl border border-gray-800 p-4 font-mono text-xs overflow-x-auto text-gray-300">
+                    <p className="text-gray-500 mb-2">// Proposed Changes to client.ts</p>
+                    <pre className="text-green-400">{state.analyzedCode}</pre>
+                    <div className="mt-4 pt-4 border-t border-gray-800 text-gray-500">
                         <span className="text-brand-400 font-bold">AI Note:</span> {state.explanation}
-                     </div>
-                  )}
-               </div>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div className="flex justify-between items-center mt-8 pt-6 border-t border-slate-200 dark:border-white/5">
-             <button onClick={() => state.actions.setStep(1)} className="text-slate-500 hover:text-slate-900 dark:text-gray-500 dark:hover:text-white text-sm">Back</button>
-             <button 
-                onClick={handleDeployStart}
-                disabled={!state.analyzedCode}
-                className="bg-brand-600 hover:bg-brand-500 text-white px-8 py-3 rounded-lg font-medium transition-all shadow-lg hover:shadow-brand-500/25 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 disabled:shadow-none"
-              >
-                <RocketIcon className="w-4 h-4" /> Start Deployment
-              </button>
-          </div>
+          )}
         </div>
       )}
 
-      {/* Step 3: Build & Deploy */}
+      {/* Step 3: Friendly Deployment Progress */}
       {state.step === 3 && (
-        <div className="space-y-6 animate-fade-in max-w-4xl mx-auto">
-           <div className="bg-[#0d1117] border border-gray-800 rounded-xl overflow-hidden shadow-2xl">
-             <div className="bg-[#161b22] px-6 py-4 border-b border-gray-800 flex justify-between items-center">
-               <div className="flex items-center gap-3">
-                  <div className={`w-2 h-2 rounded-full ${state.deploymentStatus === DeploymentStatus.SUCCESS ? 'bg-green-500 shadow-[0_0_8px_#22c55e]' : 'bg-yellow-500 animate-pulse'}`}></div>
-                  <div>
-                    <h2 className="text-sm font-bold text-gray-200">Build Log: {state.projectName}</h2>
-                    <p className="text-xs text-gray-500 font-mono mt-0.5">{state.sourceType === 'github' ? state.repoUrl : state.zipFile?.name}</p>
-                  </div>
-               </div>
-               {state.deploymentStatus === DeploymentStatus.BUILDING && (
-                 <span className="px-3 py-1 bg-brand-500/10 text-brand-400 text-xs rounded-full border border-brand-500/20 flex items-center gap-2">
-                   <Loader2 className="w-3 h-3 animate-spin" /> Compiling...
-                 </span>
-               )}
-             </div>
-             
-             <Terminal logs={state.logs} className="min-h-[400px] border-none rounded-none" />
-           </div>
-
-           {state.deploymentStatus === DeploymentStatus.SUCCESS && (
-             <div className="glass-card border-green-500/30 rounded-xl p-8 animate-slide-up flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/10 blur-[100px] -z-10"></div>
-               
-               <div className="flex items-center gap-6">
-                   <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white shadow-[0_0_20px_rgba(34,197,94,0.4)]">
-                        <Globe className="w-8 h-8" />
-                   </div>
-                   <div>
-                        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-1">Deployment Live!</h3>
-                        <a href={URLS.getDeploymentUrl(state.projectName)} target="_blank" rel="noreferrer" className="text-green-600 dark:text-green-400 hover:text-green-500 dark:hover:text-green-300 font-mono text-sm flex items-center gap-2 hover:underline">
-                        {URLS.getDeploymentUrl(state.projectName)} <ExternalLink className="w-3 h-3" />
-                        </a>
-                   </div>
-               </div>
-               
-               <div className="flex gap-3">
-                    <button onClick={() => window.open(URLS.getDeploymentUrl(state.projectName), '_blank')} className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-slate-800 dark:hover:bg-gray-200 transition-colors flex items-center gap-2">
-                        Open App <ExternalLink className="w-4 h-4" />
-                    </button>
-                    <button onClick={() => presenter.ui.navigateTo('dashboard')} className="px-6 py-2 bg-slate-200 dark:bg-white/5 text-slate-700 dark:text-white border border-slate-300 dark:border-white/10 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-white/10 transition-colors">
+        <div className="max-w-2xl mx-auto space-y-8 animate-fade-in">
+           
+           {/* Status Card */}
+           <div className="glass-card rounded-3xl p-8 text-center relative overflow-hidden">
+             {state.deploymentStatus === DeploymentStatus.SUCCESS ? (
+                <div className="animate-slide-up">
+                    <div className="w-20 h-20 bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Globe className="w-10 h-10" />
+                    </div>
+                    <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-2">You are Live!</h2>
+                    <p className="text-slate-500 mb-8">Your application is running on the edge.</p>
+                    
+                    <a href={URLS.getDeploymentUrl(state.projectName)} target="_blank" rel="noreferrer" className="block w-full bg-slate-900 dark:bg-white text-white dark:text-black p-4 rounded-xl font-bold text-lg mb-4 hover:scale-[1.02] transition-transform">
+                        Open Website
+                    </a>
+                    <button onClick={() => presenter.ui.navigateTo('dashboard')} className="text-slate-500 hover:text-slate-800 font-medium">
                         Back to Dashboard
                     </button>
-               </div>
-             </div>
-           )}
+                </div>
+             ) : state.deploymentStatus === DeploymentStatus.FAILED ? (
+                <div>
+                     <div className="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <X className="w-10 h-10" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-2">Something went wrong</h2>
+                    <p className="text-slate-500 mb-6">We couldn't launch the app. Check the logs for details.</p>
+                    <button onClick={() => state.actions.setStep(1)} className="bg-slate-200 text-slate-800 px-6 py-2 rounded-lg font-medium">Try Again</button>
+                </div>
+             ) : (
+                <div className="py-6">
+                    <div className="relative w-full max-w-sm mx-auto mb-8">
+                         {/* Friendly Progress Bar */}
+                         <div className="h-4 bg-slate-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                             <div className="h-full bg-brand-500 animate-[pulse_1s_ease-in-out_infinite]" style={{ width: '60%' }}></div>
+                         </div>
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white animate-pulse">Building your website...</h2>
+                    <p className="text-slate-500 dark:text-gray-400 mt-2">This usually takes about 15 seconds.</p>
+                </div>
+             )}
+           </div>
+
+           {/* Collapsible Logs (Hidden by default for simplicity) */}
+           <div className="rounded-xl border border-slate-200 dark:border-white/10 overflow-hidden">
+              <button 
+                onClick={() => setShowTechnical(!showTechnical)}
+                className="w-full flex items-center justify-between p-4 bg-slate-50 dark:bg-white/5 text-sm font-medium text-slate-600 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-white/10"
+              >
+                  <span className="flex items-center gap-2">
+                    <FileCode className="w-4 h-4" /> 
+                    {state.deploymentStatus === DeploymentStatus.SUCCESS ? 'View Build Logs' : 'Show Technical Details'}
+                  </span>
+                  {showTechnical ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+              
+              {(showTechnical || state.deploymentStatus === DeploymentStatus.FAILED) && (
+                  <Terminal logs={state.logs} className="h-64" />
+              )}
+           </div>
         </div>
       )}
     </div>

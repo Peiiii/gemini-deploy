@@ -7,6 +7,10 @@ export class LocalDeploymentProvider implements IDeploymentProvider {
   async analyzeCode(apiKey: string, sourceCode: string): Promise<{ refactoredCode: string; explanation: string }> {
     // Generate a fake proxy URL to simulate the backend infrastructure
     const proxyUrl = URLS.getProxyUrl(Math.random().toString(36).substring(7));
+    
+    // Simulate a slight delay for the "Magic" feel
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
     return secureCodeForDeployment(apiKey, sourceCode, proxyUrl);
   }
 
@@ -17,34 +21,27 @@ export class LocalDeploymentProvider implements IDeploymentProvider {
   ): Promise<void> {
     onStatusChange(DeploymentStatus.BUILDING);
     
-    // Simulate complex build process
+    // Simulate complex build process but faster for better UX
     const jsHash = Math.random().toString(36).substring(2, 10);
     const cssHash = Math.random().toString(36).substring(2, 10);
     
     const detailedLogs = [
-        { msg: 'Provisioning build container (img: node-18-alpine)...', delay: 500 },
-        { msg: 'Booting worker instance i-0f9a8b7c...', delay: 1200 },
-        { msg: `Cloning source from ${project.repoUrl}...`, delay: 1800 },
-        { msg: 'Analysing project structure...', delay: 3000 },
-        { msg: 'Detected package.json: Framework React (Vite)', delay: 3500, type: 'success' },
-        { msg: 'Running "npm install"...', delay: 4000 },
-        { msg: 'npm WARN deprecated inflight@1.0.6: This module is not supported', delay: 4500, type: 'warning' },
-        { msg: 'added 842 packages, and audited 843 packages in 4s', delay: 6500, type: 'success' },
-        { msg: 'Injecting environment variables...', delay: 7000 },
-        { msg: 'Applying AI Security Patch (src/api/client.ts)...', delay: 7500, type: 'info' },
-        { msg: 'Running "npm run build"...', delay: 8500 },
-        { msg: '> vite build', delay: 9000 },
-        { msg: 'vite v5.2.0 building for production...', delay: 9500 },
-        { msg: 'transforming...', delay: 10500 },
-        { msg: '✓ 342 modules transformed.', delay: 12000, type: 'success' },
-        { msg: 'rendering chunks...', delay: 12500 },
-        { msg: 'computing gzip size...', delay: 13000 },
-        { msg: 'dist/index.html                   0.46 kB │ gzip:  0.30 kB', delay: 13500 },
-        { msg: `dist/assets/index-${cssHash}.css    1.24 kB │ gzip:  0.62 kB`, delay: 13600 },
-        { msg: `dist/assets/index-${jsHash}.js      142.32 kB │ gzip: 46.12 kB`, delay: 13700 },
-        { msg: '✓ built in 4.45s', delay: 14000, type: 'success' },
-        { msg: 'Verifying DNS propagation...', delay: 15500 },
-        { msg: 'Deployment complete!', delay: 16500, type: 'success' },
+        { msg: 'Initiating launch sequence...', delay: 200 },
+        { msg: 'Connecting to cloud engines...', delay: 800 },
+        { msg: `Fetching source from ${project.repoUrl}...`, delay: 1500 },
+        { msg: 'Analyzing project structure...', delay: 2000 },
+        { msg: 'Found React application', delay: 2200, type: 'success' },
+        { msg: 'Installing dependencies (this might take a moment)...', delay: 2500 },
+        { msg: 'Packages installed successfully', delay: 3500, type: 'success' },
+        { msg: 'Securing environment variables...', delay: 3800 },
+        { msg: 'Applying AI Security Patch', delay: 4200, type: 'info' },
+        { msg: 'Building optimized assets...', delay: 4800 },
+        { msg: 'Optimizing images and fonts...', delay: 5500 },
+        { msg: `Generated index-${jsHash}.js`, delay: 5800 },
+        { msg: '✓ Build successful', delay: 6200, type: 'success' },
+        { msg: 'Propagating to global edge network...', delay: 7000 },
+        { msg: 'Verifying SSL certificates...', delay: 7500 },
+        { msg: 'Deployment complete! You are live.', delay: 8000, type: 'success' },
     ];
 
     let currentDelay = 0;

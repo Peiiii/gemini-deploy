@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Dashboard } from './pages/Dashboard';
 import { NewDeployment } from './pages/NewDeployment';
+import { Explore } from './pages/Explore';
 import { PresenterProvider, usePresenter } from './contexts/PresenterContext';
 import { useUIStore } from './stores/uiStore';
-import { Bell, HelpCircle, Sun, Moon } from 'lucide-react';
+import { useUserStore } from './stores/userStore';
+import { Bell, HelpCircle, Sun, Moon, Plus } from 'lucide-react';
 
 const MainLayout = () => {
   const { currentView, theme, actions: { toggleTheme } } = useUIStore((state) => state);
+  const { credits, actions: { addCredits } } = useUserStore((state) => state);
   const presenter = usePresenter();
 
   // Initial Data Load
@@ -35,6 +38,21 @@ const MainLayout = () => {
             <span className="text-slate-900 dark:text-gray-200 font-medium">Personal Projects</span>
           </div>
           <div className="flex items-center gap-4">
+             {/* Credit Balance Display */}
+             <div className="flex items-center gap-2 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3 py-1.5 rounded-full">
+                <div className="w-5 h-5 rounded-full bg-amber-400 text-amber-900 flex items-center justify-center text-[10px] font-bold">⚡</div>
+                <span className="text-sm font-semibold text-slate-700 dark:text-gray-200">{credits.toLocaleString()}</span>
+                <button 
+                    onClick={() => addCredits(500)} // Mock buy action
+                    className="ml-1 text-slate-400 hover:text-brand-500 transition-colors"
+                    title="Buy Credits"
+                >
+                    <Plus className="w-4 h-4" />
+                </button>
+             </div>
+
+             <div className="h-6 w-px bg-slate-200 dark:bg-white/10 mx-1"></div>
+
              <button 
                 onClick={toggleTheme}
                 className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/5 rounded-full transition-all"
@@ -42,7 +60,6 @@ const MainLayout = () => {
              >
                 {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
              </button>
-             <div className="h-6 w-px bg-slate-200 dark:bg-white/10 mx-1"></div>
              <button className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-200/50 dark:text-gray-400 dark:hover:text-white dark:hover:bg-white/5 rounded-full transition-all">
                 <HelpCircle className="w-5 h-5" />
              </button>
@@ -57,7 +74,8 @@ const MainLayout = () => {
         <div className="p-0">
           {currentView === 'dashboard' && <Dashboard />}
           {currentView === 'deploy' && <NewDeployment />}
-          {currentView !== 'dashboard' && currentView !== 'deploy' && (
+          {currentView === 'explore' && <Explore />}
+          {currentView !== 'dashboard' && currentView !== 'deploy' && currentView !== 'explore' && (
             <div className="flex flex-col items-center justify-center h-[80vh] text-slate-500 dark:text-gray-500 animate-fade-in">
               <div className="w-16 h-16 rounded-full bg-slate-200/50 dark:bg-white/5 flex items-center justify-center mb-4">
                  <span className="text-2xl">🚧</span>
