@@ -21,31 +21,21 @@ export class LocalDeploymentProvider implements IDeploymentProvider {
   ): Promise<void> {
     onStatusChange(DeploymentStatus.BUILDING);
     
-    // Simulate complex build process but faster for better UX
-    const jsHash = Math.random().toString(36).substring(2, 10);
-    const cssHash = Math.random().toString(36).substring(2, 10);
-    
-    const detailedLogs = [
-        { msg: 'Initiating launch sequence...', delay: 200 },
-        { msg: 'Connecting to cloud engines...', delay: 800 },
-        { msg: `Fetching source from ${project.repoUrl}...`, delay: 1500 },
-        { msg: 'Analyzing project structure...', delay: 2000 },
-        { msg: 'Found React application', delay: 2200, type: 'success' },
-        { msg: 'Installing dependencies (this might take a moment)...', delay: 2500 },
-        { msg: 'Packages installed successfully', delay: 3500, type: 'success' },
-        { msg: 'Securing environment variables...', delay: 3800 },
-        { msg: 'Applying AI Security Patch', delay: 4200, type: 'info' },
-        { msg: 'Building optimized assets...', delay: 4800 },
-        { msg: 'Optimizing images and fonts...', delay: 5500 },
-        { msg: `Generated index-${jsHash}.js`, delay: 5800 },
-        { msg: '✓ Build successful', delay: 6200, type: 'success' },
-        { msg: 'Propagating to global edge network...', delay: 7000 },
-        { msg: 'Verifying SSL certificates...', delay: 7500 },
-        { msg: 'Deployment complete! You are live.', delay: 8000, type: 'success' },
+    // Magical log sequence - "Magic Toy" Vibe
+    const magicLogs = [
+        { msg: '🪄 Sprinkling magic dust...', delay: 500 },
+        { msg: '📦 Opening your magic package...', delay: 1500 },
+        { msg: '✨ Converting text to pure energy...', delay: 2500 },
+        { msg: '⚡ Charging the crystals...', delay: 3000 },
+        { msg: '🛡️ Casting protection spells...', delay: 4000, type: 'info' },
+        { msg: '🔮 Summoning the internet spirits...', delay: 5000 },
+        { msg: '🧪 Mixing the final potion...', delay: 6000 },
+        { msg: '🚀 Almost there...', delay: 7000 },
+        { msg: '💥 BOOM! Your app is LIVE!', delay: 8000, type: 'success' },
     ];
 
     let currentDelay = 0;
-    for (const item of detailedLogs) {
+    for (const item of magicLogs) {
         const delay = item.delay - currentDelay;
         currentDelay = item.delay;
         

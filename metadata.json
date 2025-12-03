@@ -1,5 +1,5 @@
 {
-  "name": "GeminiDeploy",
-  "description": "One-click deployment platform for Google Gemini AI Studio applications with automatic secure proxy configuration.",
+  "name": "GemiGo",
+  "description": "Don't just Prompt it. Publish it. Turn your Gemini AI Studio exports into live web apps in seconds.",
   "requestFramePermissions": []
 }

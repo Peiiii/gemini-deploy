@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GeminiDeploy - AI App Hosting</title>
+    <title>GemiGo - Don't just Prompt it. Publish it.</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -17,17 +17,21 @@
             },
             colors: {
               brand: {
-                50: '#f0f9ff',
-                100: '#e0f2fe',
-                200: '#bae6fd',
-                300: '#7dd3fc',
-                400: '#38bdf8',
-                500: '#0ea5e9',
-                600: '#0284c7',
-                700: '#0369a1',
-                800: '#075985',
-                900: '#0c4a6e',
-                950: '#082f49',
+                50: '#f5f3ff',
+                100: '#ede9fe',
+                200: '#ddd6fe',
+                300: '#c4b5fd',
+                400: '#a78bfa',
+                500: '#8b5cf6', // Gemini Purple
+                600: '#7c3aed',
+                700: '#6d28d9',
+                800: '#5b21b6',
+                900: '#4c1d95',
+                950: '#2e1065',
+              },
+              action: {
+                green: '#39ff14', // Electric Green
+                orange: '#ff5f1f', // Bright Orange
               },
               // Semantic colors mapped to CSS variables
               app: {
@@ -39,15 +43,15 @@
                 text: 'var(--text-main)',
                 muted: 'var(--text-muted)'
               },
-              accent: {
-                glow: '#38bdf8',
-              }
             },
             animation: {
               'fade-in': 'fadeIn 0.5s ease-out forwards',
               'slide-up': 'slideUp 0.5s ease-out forwards',
               'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
               'scan': 'scan 2s linear infinite',
+              'bounce-slow': 'bounce 2s infinite',
+              'spin-slow': 'spin 3s linear infinite',
+              'wiggle': 'wiggle 1s ease-in-out infinite',
             },
             keyframes: {
               fadeIn: {
@@ -61,6 +65,10 @@
               scan: {
                 '0%': { top: '0%' },
                 '100%': { top: '100%' },
+              },
+              wiggle: {
+                '0%, 100%': { transform: 'rotate(-3deg)' },
+                '50%': { transform: 'rotate(3deg)' },
               }
             }
           }
@@ -102,8 +110,8 @@
       /* In dark mode, add the gradient background. In light mode, keep it cleaner or subtle. */
       .dark body {
         background-image: 
-          radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 25%), 
-          radial-gradient(circle at 85% 30%, rgba(99, 102, 241, 0.08), transparent 25%);
+          radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 30%), 
+          radial-gradient(circle at 85% 30%, rgba(236, 72, 153, 0.15), transparent 30%);
       }
       
       /* Glassmorphism Utilities */
@@ -128,8 +136,8 @@
       }
 
       .glass-card:hover {
-        border-color: rgba(56, 189, 248, 0.3);
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+        border-color: rgba(139, 92, 246, 0.3);
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.1);
       }
 
       /* Custom scrollbar for terminal */
@@ -147,11 +155,25 @@
         background: #475569; 
       }
 
-      /* Code Editor Syntax Highlighting Mockup */
-      .token-keyword { color: #c084fc; } /* Purple */
-      .token-string { color: #4ade80; }  /* Green */
-      .token-function { color: #60a5fa; } /* Blue */
-      .token-comment { color: #64748b; }  /* Gray */
+      /* Magic Animation Utilities */
+      .magic-glow {
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3);
+      }
+      .action-glow {
+        box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      }
+      .action-glow:hover {
+        box-shadow: 0 0 30px rgba(57, 255, 20, 0.6);
+      }
+      
+      /* Magic Button Gradient */
+      .btn-magic {
+        background-size: 200% auto;
+        transition: 0.5s;
+      }
+      .btn-magic:hover {
+        background-position: right center;
+      }
     </style>
   <script type="importmap">
 {
@@ -161,7 +183,8 @@
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
     "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "zustand": "https://aistudiocdn.com/zustand@^5.0.9"
+    "zustand": "https://aistudiocdn.com/zustand@^5.0.9",
+    "qrcode.react": "https://aistudiocdn.com/qrcode.react@^3.1.0"
   }
 }
 </script>
