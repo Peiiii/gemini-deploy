@@ -9,8 +9,9 @@ const ai = new GoogleGenAI({
   apiKey: process.env.API_KEY 
 });
 
-const model = ai.models.getGenerativeModel({ 
-  model: "${APP_CONFIG.DEFAULT_AI_MODEL}" 
+const response = await ai.models.generateContent({
+  model: "${APP_CONFIG.DEFAULT_AI_MODEL}",
+  contents: "Hello world"
 });`;
 
 interface DeploymentState {

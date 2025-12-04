@@ -1,7 +1,7 @@
 export const APP_CONFIG = {
   NAME: 'GeminiDeploy',
   DEPLOYMENT_DOMAIN: 'gemini-deploy.com',
-  DEFAULT_AI_MODEL: 'gemini-2.5-flash',
+  DEFAULT_AI_MODEL: 'gemini-3-pro-preview',
   // Feature flag to switch between Local Mock Data and Real Backend
   USE_MOCK_ADAPTER: true,
   // Base URL for the future real backend
